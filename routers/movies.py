@@ -4,9 +4,9 @@ from business_logic.models import MovieCreate, BookingCreate
 from routers.models import Movie
 from business_logic.Movie_logic import Servicelayer
 from config.session import get_db
-from dataaccess.data_models import Booking
+from fastapi import APIRouter
 
-movie_app = FastAPI(title = "Movie Booking API")
+movie_app = APIRouter()
 
 
 
