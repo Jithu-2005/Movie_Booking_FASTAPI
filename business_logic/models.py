@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 from dataaccess.data_models import Booking, Movie
 
-class Movie(BaseModel):
+class MovieCreate(BaseModel):
     Movie_name: str
     Theatre_name: str
     Ticket_price: int
