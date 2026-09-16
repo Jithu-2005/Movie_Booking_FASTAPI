@@ -1,7 +1,6 @@
 from fastapi import FastAPI,HTTPException,Depends
 from sqlalchemy.orm import Session
-from business_logic.models import MovieCreate, BookingCreate
-from routers.models import Movie
+from routers.models import Movie, BookingCreate
 from business_logic.Movie_logic import Servicelayer
 from config.session import get_db
 from fastapi import APIRouter
@@ -56,7 +55,7 @@ def get_movie_by_id(movie_id: int, db: Session = Depends(get_db)):
 
 
 @movie_app.put("/movies/{movie_id}")
-def update_movie(movie_id: int, movie_data: MovieCreate, db: Session = Depends(get_db)):
+def update_movie(movie_id: int, movie_data: Movie, db: Session = Depends(get_db)):
     try:
         service_logic = Servicelayer(db_session=db)
         service_response = service_logic.update_movie(movie_id, movie_data)
