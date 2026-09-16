@@ -2,12 +2,12 @@ from pydantic import BaseModel
 
 
 class Movie(BaseModel):
-    movie_name: str
-    theatre_name: str
-    ticket_price: int
-    description: str
-    language: str = "Telugu"
-    total_seats: int = 100
+    Movie_name: str
+    Theatre_name: str
+    Ticket_price: int
+    Description: str
+    Language: str = "Telugu"
+    Total_seats: int = 100
 
 
 class BookingCreate(BaseModel):
