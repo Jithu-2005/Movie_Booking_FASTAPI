@@ -19,10 +19,6 @@ class BookingRepository:
             return booking
 
 
-    def book_tickets(self, movie_id: int):
-        return self.db.query(Booking).filter(Movie.id == movie_id).first()
-
-
     def get_booking_by_id(self, booking_id: int):
         return self.db.query(Booking).filter(Booking.booking_id == booking_id).first()
 

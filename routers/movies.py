@@ -1,6 +1,7 @@
 from fastapi import FastAPI,HTTPException,Depends
 from sqlalchemy.orm import Session
-from routers.models import Movie, BookingCreate
+from business_logic.models import MovieCreate, BookingCreate
+from routers.models import Movie
 from business_logic.Movie_logic import Servicelayer
 from config.session import get_db
 from fastapi import APIRouter
@@ -15,7 +16,7 @@ async def add_Movie(AddMovie: Movie, db: Session = Depends(get_db)):
     try:
         service_logic = Servicelayer(db_session=db)
         service_response = service_logic.create_movie(AddMovie)
-        return Movie.model_dump(service_response) # or return AddMovie.model_dump()
+        return service_response
     except Exception as e:
         # This will print the actual Python/SQLAlchemy error to your terminal!
         print(f"THE REAL ERROR IS: {repr(e)}")
@@ -43,23 +44,28 @@ def get_movie_by_id(movie_id: int, db: Session = Depends(get_db)):
     try:
         service_logic = Servicelayer(db_session=db)
         service_response = service_logic.get_movie_by_id(movie_id)
-        if not service_response:
-            raise HTTPException(status_code=404, detail="Movie not found")
-        return service_response
     except Exception as e:
         print(f"THE REAL ERROR IS: {repr(e)}")
         raise HTTPException(detail=f"Error: {str(e)}", status_code=500)
+    if not service_response:
+        raise HTTPException(status_code=404, detail="Movie not found")
+    return service_response
 
 
 # Update movie details
 
 
 @movie_app.put("/movies/{movie_id}")
-def update_movie(movie_id: int, movie_data: Movie, db: Session = Depends(get_db)):
+def update_movie(movie_id: int, movie_data: MovieCreate, db: Session = Depends(get_db)):
     try:
         service_logic = Servicelayer(db_session=db)
+        existing_movie = service_logic.get_movie_by_id(movie_id)
+        if not existing_movie:
+            raise HTTPException(status_code=404, detail="Movie not found")
         service_response = service_logic.update_movie(movie_id, movie_data)
         return service_response
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"THE REAL ERROR IS: {repr(e)}")
         raise HTTPException(detail=f"Error: {str(e)}", status_code=500)
@@ -73,15 +79,15 @@ def delete_movie(movie_id: int, db: Session = Depends(get_db)):
     try:
         service_logic = Servicelayer(db_session=db)
         service_response = service_logic.delete_movie(movie_id)
-        if not service_response:
-            raise HTTPException(status_code=404, detail="Movie not found")
-        return {"message": "Movie deleted successfully"}
     except Exception as e:
         print(f"THE REAL ERROR IS: {repr(e)}")
         raise HTTPException(detail=f"Error: {str(e)}", status_code=500)
+    if not service_response:
+        raise HTTPException(status_code=404, detail="Movie not found")
+    return {"message": "Movie deleted successfully"}
 
 
-# Book tickets
+# Book tickets (uses movie_name, not movie_id)
 
 
 @movie_app.post("/bookings")
@@ -90,6 +96,9 @@ def book_tickets(booking_data: BookingCreate, db: Session = Depends(get_db)):
         service_logic = Servicelayer(db_session=db)
         service_response = service_logic.book_tickets(booking_data)
         return service_response
+    except ValueError as e:
+        # Movie not found / not enough seats -> client error, not a server error
+        raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         print(f"THE REAL ERROR IS: {repr(e)}")
         raise HTTPException(detail=f"Error: {str(e)}", status_code=500)

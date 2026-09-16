@@ -15,21 +15,16 @@ class Movie(Base):
     total_seats = Column(Integer, default=100)
     available_seats = Column(Integer, default=100)
 
-# class Booking(Base):
-#     __tablename__ = "Booking_Details"
     
-#     booking_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-#     movie_id = Column(Integer, ForeignKey("Movie_Details.id"))  # Links safely to the primary key ID
-#     language = Column(String)  # Store the chosen ticket language directly
-#     seats_to_book = Column(Integer)
-#     total_amount = Column(Integer)
+
 
 
 class Booking(Base):
     __tablename__ = "Booking_Details"
     
     booking_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    movie_id = Column(Integer, ForeignKey("Movie_Details.id"))
+    movie_name = Column(String, index=True)  # Book by movie name instead of movie_id
+    language = Column(String)  # Store the chosen ticket language directly
     seats_to_book = Column(Integer)
     total_amount = Column(Integer)
 

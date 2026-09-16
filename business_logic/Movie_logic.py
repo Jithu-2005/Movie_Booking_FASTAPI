@@ -52,6 +52,8 @@ class Servicelayer:
             total_amount = calculated_total
         )
         db_result = self.booking_repo.add_booking(book_tickets)
+        movie.total_seats -= booking_data.seats_to_book
+        self.db_session.commit()
         return BookingCreate.from_db(db_result)
 
 

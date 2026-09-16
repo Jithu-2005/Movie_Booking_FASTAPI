@@ -31,8 +31,12 @@ class MovieRepository:
 
 
     def delete_movie(self, movie_id: int):
-        return self.db.query(Movie).filter(Movie.id == movie_id).first()
-
+        movie = self.db.query(Movie).filter(Movie.id == movie_id).first()
+        if not movie:
+            return False
+        self.db.delete(movie)
+        self.db.commit()
+        return True
 
     def get_movie_seats(self, movie_id: int):
             return self.db.query(Movie).filter(Movie.id == movie_id).first()
