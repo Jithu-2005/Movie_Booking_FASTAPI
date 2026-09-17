@@ -16,9 +16,9 @@ class Servicelayer:
             Movie_name = movie.Movie_name,
             Theatre_name = movie.Theatre_name,
             Ticket_price = movie.Ticket_price,
-            description = movie.description,
-            language = movie.language,
-            total_seats = movie.total_seats
+            Description = movie.Description,
+            Language = movie.Language,
+            Total_seats = movie.Total_seats
         )
         db_result = self.movie_repo.add_movie(create_movie)
         return MovieCreate.from_db(db_result)

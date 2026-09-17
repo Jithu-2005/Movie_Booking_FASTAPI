@@ -6,9 +6,9 @@ class MovieCreate(BaseModel):
     Movie_name: str
     Theatre_name: str
     Ticket_price: int
-    description: str
-    language: str
-    total_seats: int
+    Description: str
+    Language: str
+    Total_seats: int
 
 
     @classmethod
@@ -17,9 +17,9 @@ class MovieCreate(BaseModel):
             Movie_name = db_model.Movie_name,
             Theatre_name = db_model.Theatre_name,
             Ticket_price = db_model.Ticket_price,
-            description = db_model.description,
-            language = db_model.language,
-            total_seats = db_model.total_seats
+            Description = db_model.Description,
+            Language = db_model.Language,
+            Total_seats = db_model.Total_seats
         )
 
 

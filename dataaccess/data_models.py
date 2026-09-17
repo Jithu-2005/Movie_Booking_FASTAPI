@@ -10,9 +10,9 @@ class Movie(Base):
     Movie_name = Column(String, index=True)
     Theatre_name = Column(String, index=True)
     Ticket_price = Column(Integer, index=True)
-    description = Column(String, index=True)
-    language = Column(String, index=True, default="Telugu")
-    total_seats = Column(Integer, default=100)
+    Description = Column("description", String, index=True)
+    Language = Column("language", String, index=True, default="Telugu")
+    Total_seats = Column("total_seats", Integer, default=100)
     available_seats = Column(Integer, default=100)
 
     
