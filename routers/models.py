@@ -11,5 +11,6 @@ class Movie(BaseModel):
 
 
 class BookingCreate(BaseModel):
-    movie_id: int
+    movie_name: str
     seats_to_book: int
+    language: str
