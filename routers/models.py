@@ -5,7 +5,6 @@ class Movie(BaseModel):
     Movie_name: str
     Theatre_name: str
     Ticket_price: int
-    Description: str
     Language: str = "Telugu"
     Total_seats: int = 100
 
