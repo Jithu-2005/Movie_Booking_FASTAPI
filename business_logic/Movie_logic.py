@@ -52,13 +52,12 @@ class Servicelayer:
             total_amount = calculated_total
         )
         db_result = self.booking_repo.add_booking(book_tickets)
-        movie.total_seats -= booking_data.seats_to_book
+        movie.Total_seats -= booking_data.seats_to_book  # <-- Updated to Total_seats
         self.db_session.commit()
         return BookingCreate.from_db(db_result)
 
 
     def get_booking_details(self, booking_id: int):
-
         return self.booking_repo.get_booking_by_id(booking_id)
 
     def cancel_booking(self, booking_id: int):
@@ -68,7 +67,7 @@ class Servicelayer:
         
         movie = self.db_session.query(Movie).filter(Movie.Movie_name == booking.movie_name).first()
         if movie:
-            movie.total_seats += booking.seats_to_book
+            movie.Total_seats += booking.seats_to_book  # <-- Updated to Total_seats
             self.db_session.commit()
 
         return self.booking_repo.delete_booking(booking_id)
@@ -77,7 +76,7 @@ class Servicelayer:
         movie = self.get_movie_by_id(movie_id)
         if not movie:
             return None
-        return movie.total_seats
+        return movie.Total_seats  # <-- Updated to Total_seats
 
 
     def get_movies_by_language(self, language: str):
